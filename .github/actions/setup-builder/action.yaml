@@ -55,3 +55,11 @@ runs:
         rustup toolchain install ${{inputs.rust-version}}
         rustup default ${{inputs.rust-version}}
         rustup component add rustfmt clippy
+
+    - name: Setup Rust cargo2junit
+      shell: bash
+      # Running tests results in multiple testsuites if you use "--format junit" which results in
+      # an invalid XML file.  These can be aggregated by Formatting the results as JSON and using
+      # cargo2junit to reformat the results as JUnit XML.
+      run: |
+        cargo install cargo2junit

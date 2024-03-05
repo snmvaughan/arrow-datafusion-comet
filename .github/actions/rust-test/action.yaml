@@ -57,4 +57,5 @@ runs:
       shell: bash
       run: |
         cd core
-        RUST_BACKTRACE=1 cargo test
+        mkdir -p target/cargo-reports
+        RUST_BACKTRACE=1 cargo test --release --color=never -- --color=never -Zunstable-options --report-time --format json | cargo2junit > target/cargo-reports/TEST-all.xml 
