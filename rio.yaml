@@ -21,7 +21,7 @@ machine:
 
 builds:
   - group: test-comet-rust
-    branchName: master
+    branchName: mastertmp
     version: platform
     machine: &rio3-machine
       baseImage: docker.apple.com/pie/boson-builder:latest
@@ -74,7 +74,7 @@ builds:
 
   - &comet-java
     group: test-comet-java
-    branchName: master
+    branchName: mastertmp
     version: 3.2_2.12
     machine:
       <<: *rio3-machine
@@ -130,7 +130,7 @@ builds:
 
   - &comet-tpcds
     group: test-comet-tpcds-queries
-    branchName: master
+    branchName: mastertmp
     version: 3.4_2.12
     machine:
       <<: *rio3-machine
@@ -152,7 +152,7 @@ builds:
 
   - &comet-tpch
     group: test-comet-tpch-queries
-    branchName: master
+    branchName: mastertmp
     version: 3.4_2.12
     machine:
       <<: *rio3-machine
@@ -170,7 +170,7 @@ builds:
 
   - &comet-spark-32
     group: test-spark-sql-catalyst
-    branchName: master
+    branchName: mastertmp
     version: 3.2_2.12
     timeout: 180
     machine: &rio2-machine
@@ -219,7 +219,7 @@ builds:
   - &comet-spark
     group: test-spark-sql-catalyst
     version: 3.3_2.12
-    branchName: master
+    branchName: mastertmp
     timeout: 180
     machine:
       <<: *rio3-machine
@@ -600,7 +600,7 @@ builds:
 
   - &comet-iceberg
     group: test-iceberg
-    branchName: master
+    branchName: mastertmp
     version: 3.2_2.12
     machine:
       <<: *rio3-machine
@@ -687,7 +687,7 @@ builds:
     finally:
       <<: *slack-no-notification
 
-  - branchName: master
+  - branchName: mastertmp
     group: builder
     version: stage1
     trigger:
@@ -718,9 +718,9 @@ builds:
             - repo: docker.apple.com/pie/boson-builder
     finally:
       pipelineChain:
-        - pipeline: builder-master-publish-stage2
+        - pipeline: builder-mastertmp-publish-stage2
 
-  - branchName: master
+  - branchName: mastertmp
     group: builder
     version: stage2
     timeout: 240
@@ -739,9 +739,9 @@ builds:
             - repo: docker.apple.com/pie/boson-builder
     finally:
       pipelineChain:
-        - pipeline: builder-master-publish-stage3
+        - pipeline: builder-mastertmp-publish-stage3
 
-  - branchName: master
+  - branchName: mastertmp
     group: builder
     version: stage3
     trigger:
@@ -757,7 +757,7 @@ builds:
           publish:
             - repo: docker.apple.com/pie/boson-builder
 
-  - branchName: master
+  - branchName: mastertmp
     group: builder-ubi8
     trigger:
       # Run once a week, at a random but consistent offset, to automatically update rust, rust index, os patches, etc.
@@ -775,7 +775,7 @@ builds:
             - repo: docker.apple.com/pie/boson-builder-ubi8
 
   - group: build
-    branchName: master
+    branchName: mastertmp
     version: platform
     machine:
       <<: *rio3-machine
@@ -794,12 +794,12 @@ builds:
             - repo: pie-snapshot-local:pie-release-local
     finally:
       pipelineChain:
-        - pipeline: build-artifacts-master-build-platform
+        - pipeline: build-artifacts-mastertmp-build-platform
 
   # Capture the build artifacts from the RIO_CONTEXT_FILE, and convert them to build arguments for
   # the downstream jobs so that they can be restarted when there is a Rio hiccup.
   - group: build-artifacts
-    branchName: master
+    branchName: mastertmp
     version: platform
     trigger:
       gitPush: false
@@ -813,31 +813,31 @@ builds:
         - cat $RIO_CONTEXT_FILE
     finally:
       pipelineChain:
-        - pipeline: build-master-publish-3.2_2.12
+        - pipeline: build-mastertmp-publish-3.2_2.12
           buildArguments:
             - name: "ARTIFACT_X86_64"
               value: "${ARTIFACT_X86_64}"
             - name: "ARTIFACT_AARCH64"
               value: "${ARTIFACT_AARCH64}"
-        - pipeline: build-master-publish-3.3_2.12
+        - pipeline: build-mastertmp-publish-3.3_2.12
           buildArguments:
             - name: "ARTIFACT_X86_64"
               value: "${ARTIFACT_X86_64}"
             - name: "ARTIFACT_AARCH64"
               value: "${ARTIFACT_AARCH64}"
-        - pipeline: build-master-publish-3.3_2.13
+        - pipeline: build-mastertmp-publish-3.3_2.13
           buildArguments:
             - name: "ARTIFACT_X86_64"
               value: "${ARTIFACT_X86_64}"
             - name: "ARTIFACT_AARCH64"
               value: "${ARTIFACT_AARCH64}"
-        - pipeline: build-master-publish-3.4_2.12
+        - pipeline: build-mastertmp-publish-3.4_2.12
           buildArguments:
             - name: "ARTIFACT_X86_64"
               value: "${ARTIFACT_X86_64}"
             - name: "ARTIFACT_AARCH64"
               value: "${ARTIFACT_AARCH64}"
-        - pipeline: build-master-publish-3.4_2.13
+        - pipeline: build-mastertmp-publish-3.4_2.13
           buildArguments:
             - name: "ARTIFACT_X86_64"
               value: "${ARTIFACT_X86_64}"
@@ -845,7 +845,7 @@ builds:
               value: "${ARTIFACT_AARCH64}"
 
   - group: build
-    branchName: master
+    branchName: mastertmp
     version: 3.2_2.12
     trigger:
       gitPush: false
@@ -889,10 +889,10 @@ builds:
             - repo: pie-snapshot-local:pie-release-local
     finally:
       pipelineChain:
-        - pipeline: build-artifacts-master-build-3.2_2.12
+        - pipeline: build-artifacts-mastertmp-build-3.2_2.12
 
   - group: build
-    branchName: master
+    branchName: mastertmp
     version: 3.3_2.12
     trigger:
       gitPush: false
@@ -911,10 +911,10 @@ builds:
       <<: *snapshot_build_package
     finally:
       pipelineChain:
-        - pipeline: build-artifacts-master-build-3.3_2.12
+        - pipeline: build-artifacts-mastertmp-build-3.3_2.12
 
   - group: build
-    branchName: master
+    branchName: mastertmp
     version: 3.3_2.13
     trigger:
       gitPush: false
@@ -933,10 +933,10 @@ builds:
       <<: *snapshot_build_package
     finally:
       pipelineChain:
-        - pipeline: build-artifacts-master-build-3.3_2.13
+        - pipeline: build-artifacts-mastertmp-build-3.3_2.13
 
   - group: build
-    branchName: master
+    branchName: mastertmp
     version: 3.4_2.12
     trigger:
       gitPush: false
@@ -955,10 +955,10 @@ builds:
       <<: *snapshot_build_package
     finally:
       pipelineChain:
-        - pipeline: build-artifacts-master-build-3.4_2.12
+        - pipeline: build-artifacts-mastertmp-build-3.4_2.12
 
   - group: build
-    branchName: master
+    branchName: mastertmp
     version: 3.4_2.13
     trigger:
       gitPush: false
@@ -977,12 +977,12 @@ builds:
       <<: *snapshot_build_package
     finally:
       pipelineChain:
-        - pipeline: build-artifacts-master-build-3.4_2.13
+        - pipeline: build-artifacts-mastertmp-build-3.4_2.13
 
   # Capture the build artifacts from the RIO_CONTEXT_FILE, and convert them to build arguments for
   # the downstream jobs so that they can be restarted when there is a Rio hiccup.
   - group: build-artifacts
-    branchName: master
+    branchName: mastertmp
     version: 3.2_2.12
     trigger:
       gitPush: false
@@ -995,13 +995,13 @@ builds:
         - cat $RIO_CONTEXT_FILE
     finally:
       pipelineChain:
-        - pipeline: image-master-publish-3.2_2.12
+        - pipeline: image-mastertmp-publish-3.2_2.12
           buildArguments:
             - name: "ARTIFACT"
               value: "${ARTIFACT}"
 
   - group: build-artifacts
-    branchName: master
+    branchName: mastertmp
     version: 3.3_2.12
     trigger:
       gitPush: false
@@ -1011,13 +1011,13 @@ builds:
       <<: *build-artifacts-build
     finally:
       pipelineChain:
-        - pipeline: image-master-publish-3.3_2.12
+        - pipeline: image-mastertmp-publish-3.3_2.12
           buildArguments:
             - name: "ARTIFACT"
               value: "${ARTIFACT}"
 
   - group: build-artifacts
-    branchName: master
+    branchName: mastertmp
     version: 3.3_2.13
     trigger:
       gitPush: false
@@ -1027,13 +1027,13 @@ builds:
       <<: *build-artifacts-build
     finally:
       pipelineChain:
-        - pipeline: image-master-publish-3.3_2.13
+        - pipeline: image-mastertmp-publish-3.3_2.13
           buildArguments:
             - name: "ARTIFACT"
               value: "${ARTIFACT}"
 
   - group: build-artifacts
-    branchName: master
+    branchName: mastertmp
     version: 3.4_2.12
     trigger:
       gitPush: false
@@ -1043,13 +1043,13 @@ builds:
       <<: *build-artifacts-build
     finally:
       pipelineChain:
-        - pipeline: image-master-publish-3.4_2.12
+        - pipeline: image-mastertmp-publish-3.4_2.12
           buildArguments:
             - name: "ARTIFACT"
               value: "${ARTIFACT}"
 
   - group: build-artifacts
-    branchName: master
+    branchName: mastertmp
     version: 3.4_2.13
     trigger:
       gitPush: false
@@ -1059,13 +1059,13 @@ builds:
       <<: *build-artifacts-build
     finally:
       pipelineChain:
-        - pipeline: image-master-publish-3.4_2.13
+        - pipeline: image-mastertmp-publish-3.4_2.13
           buildArguments:
             - name: "ARTIFACT"
               value: "${ARTIFACT}"
 
   - group: image
-    branchName: master
+    branchName: mastertmp
     version: 3.2_2.12
     trigger:
       gitPush: false
@@ -1107,7 +1107,7 @@ builds:
             - repo: docker.apple.com/comet-dev/spark${VERSION}
 
   - group: image
-    branchName: master
+    branchName: mastertmp
     version: 3.3_2.12
     trigger:
       gitPush: false
@@ -1125,7 +1125,7 @@ builds:
       <<: *snapshot_image_package
 
   - group: image
-    branchName: master
+    branchName: mastertmp
     version: 3.3_2.13
     trigger:
       gitPush: false
@@ -1143,7 +1143,7 @@ builds:
       <<: *snapshot_image_package
 
   - group: image
-    branchName: master
+    branchName: mastertmp
     version: 3.4_2.12
     trigger:
       gitPush: false
@@ -1161,7 +1161,7 @@ builds:
       <<: *snapshot_image_package
 
   - group: image
-    branchName: master
+    branchName: mastertmp
     version: 3.4_2.13
     trigger:
       gitPush: false
@@ -1179,7 +1179,7 @@ builds:
       <<: *snapshot_image_package
 
   - group: nightly
-    branchName: master
+    branchName: mastertmp
     version: 3.2_2.12
     trigger:
       timer: '@midnight'
@@ -1203,7 +1203,7 @@ builds:
             - repo: docker.apple.com/comet-dev/spark${VERSION}
 
   - group: nightly
-    branchName: master
+    branchName: mastertmp
     version: 3.3_2.12
     trigger:
       timer: '@midnight'
@@ -1219,7 +1219,7 @@ builds:
       <<: *nightly_image_package
 
   - group: nightly
-    branchName: master
+    branchName: mastertmp
     version: 3.3_2.13
     trigger:
       timer: '@midnight'
@@ -1235,7 +1235,7 @@ builds:
       <<: *nightly_image_package
 
   - group: nightly
-    branchName: master
+    branchName: mastertmp
     version: 3.4_2.12
     trigger:
       timer: '@midnight'
@@ -1251,7 +1251,7 @@ builds:
       <<: *nightly_image_package
 
   - group: nightly
-    branchName: master
+    branchName: mastertmp
     version: 3.4_2.13
     trigger:
       timer: '@midnight'
@@ -1273,7 +1273,7 @@ builds:
       <<: *rio3-machine
       env:
         <<: *proxy_env
-    # This is the same as the master branch build except for the updated version (non-snapshot)
+    # This is the same as the mastertmp branch build except for the updated version (non-snapshot)
     build:
       template: freestyle:v4:publish
       steps:
@@ -1665,7 +1665,7 @@ builds:
       <<: *release_image_package
 
   - group: pr-build
-    branchName: master
+    branchName: mastertmp
     version: start
     machine:
       <<: *rio3-machine
@@ -1705,7 +1705,7 @@ builds:
             - repo: pie-snapshot-local:pie-release-local
     finally:
       pipelineChain:
-        - pipeline: pr-build-artifacts-master-build-platform
+        - pipeline: pr-build-artifacts-mastertmp-build-platform
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
@@ -1713,7 +1713,7 @@ builds:
   # Capture the build artifacts from the RIO_CONTEXT_FILE, and convert them to build arguments for
   # the downstream jobs so that they can be restarted when there is a Rio hiccup.
   - group: pr-build-artifacts
-    branchName: master
+    branchName: mastertmp
     version: platform
     trigger:
       gitPush: false
@@ -1730,7 +1730,7 @@ builds:
         - cat $RIO_CONTEXT_FILE
     finally:
       pipelineChain:
-        - pipeline: pr-build-master-publish-3.2_2.12
+        - pipeline: pr-build-mastertmp-publish-3.2_2.12
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
@@ -1738,7 +1738,7 @@ builds:
               value: "${ARTIFACT_X86_64}"
             - name: "ARTIFACT_AARCH64"
               value: "${ARTIFACT_AARCH64}"
-        - pipeline: pr-build-master-publish-3.3_2.12
+        - pipeline: pr-build-mastertmp-publish-3.3_2.12
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
@@ -1746,7 +1746,7 @@ builds:
               value: "${ARTIFACT_X86_64}"
             - name: "ARTIFACT_AARCH64"
               value: "${ARTIFACT_AARCH64}"
-        - pipeline: pr-build-master-publish-3.3_2.13
+        - pipeline: pr-build-mastertmp-publish-3.3_2.13
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
@@ -1754,7 +1754,7 @@ builds:
               value: "${ARTIFACT_X86_64}"
             - name: "ARTIFACT_AARCH64"
               value: "${ARTIFACT_AARCH64}"
-        - pipeline: pr-build-master-publish-3.4_2.12
+        - pipeline: pr-build-mastertmp-publish-3.4_2.12
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
@@ -1762,7 +1762,7 @@ builds:
               value: "${ARTIFACT_X86_64}"
             - name: "ARTIFACT_AARCH64"
               value: "${ARTIFACT_AARCH64}"
-        - pipeline: pr-build-master-publish-3.4_2.13
+        - pipeline: pr-build-mastertmp-publish-3.4_2.13
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
@@ -1772,7 +1772,7 @@ builds:
               value: "${ARTIFACT_AARCH64}"
 
   - group: pr-build
-    branchName: master
+    branchName: mastertmp
     version: 3.2_2.12
     trigger:
       gitPush: false
@@ -1823,13 +1823,13 @@ builds:
             - repo: pie-snapshot-local:pie-release-local
     finally:
       pipelineChain:
-        - pipeline: pr-build-artifacts-master-build-3.2_2.12
+        - pipeline: pr-build-artifacts-mastertmp-build-3.2_2.12
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
 
   - group: pr-build
-    branchName: master
+    branchName: mastertmp
     version: 3.3_2.12
     trigger:
       gitPush: false
@@ -1846,13 +1846,13 @@ builds:
       <<: *pr_build_package
     finally:
       pipelineChain:
-        - pipeline: pr-build-artifacts-master-build-3.3_2.12
+        - pipeline: pr-build-artifacts-mastertmp-build-3.3_2.12
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
 
   - group: pr-build
-    branchName: master
+    branchName: mastertmp
     version: 3.3_2.13
     trigger:
       gitPush: false
@@ -1869,13 +1869,13 @@ builds:
       <<: *pr_build_package
     finally:
       pipelineChain:
-        - pipeline: pr-build-artifacts-master-build-3.3_2.13
+        - pipeline: pr-build-artifacts-mastertmp-build-3.3_2.13
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
 
   - group: pr-build
-    branchName: master
+    branchName: mastertmp
     version: 3.4_2.12
     trigger:
       gitPush: false
@@ -1902,7 +1902,7 @@ builds:
             - repo: docker.apple.com/comet-dev/spark${SPARK_VERSION}_${SCALA_VERSION}
 
   - group: pr-build
-    branchName: master
+    branchName: mastertmp
     version: 3.4_2.13
     trigger:
       gitPush: false
@@ -1921,7 +1921,7 @@ builds:
   # Capture the build artifacts from the RIO_CONTEXT_FILE, and convert them to build arguments for
   # the downstream jobs so that they can be restarted when there is a Rio hiccup.
   - group: pr-build-artifacts
-    branchName: master
+    branchName: mastertmp
     version: 3.2_2.12
     trigger:
       gitPush: false
@@ -1931,7 +1931,7 @@ builds:
       <<: *build-artifacts-build
     finally:
       pipelineChain:
-        - pipeline: pr-image-master-publish-3.2_2.12
+        - pipeline: pr-image-mastertmp-publish-3.2_2.12
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
@@ -1939,7 +1939,7 @@ builds:
               value: "${ARTIFACT}"
 
   - group: pr-build-artifacts
-    branchName: master
+    branchName: mastertmp
     version: 3.3_2.12
     trigger:
       gitPush: false
@@ -1949,7 +1949,7 @@ builds:
       <<: *build-artifacts-build
     finally:
       pipelineChain:
-        - pipeline: pr-image-master-publish-3.3_2.12
+        - pipeline: pr-image-mastertmp-publish-3.3_2.12
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
@@ -1957,7 +1957,7 @@ builds:
               value: "${ARTIFACT}"
 
   - group: pr-build-artifacts
-    branchName: master
+    branchName: mastertmp
     version: 3.3_2.13
     trigger:
       gitPush: false
@@ -1967,7 +1967,7 @@ builds:
       <<: *build-artifacts-build
     finally:
       pipelineChain:
-        - pipeline: pr-image-master-publish-3.3_2.13
+        - pipeline: pr-image-mastertmp-publish-3.3_2.13
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
@@ -1975,7 +1975,7 @@ builds:
               value: "${ARTIFACT}"
 
   - group: pr-image
-    branchName: master
+    branchName: mastertmp
     version: 3.2_2.12
     trigger:
       gitPush: false
@@ -2046,7 +2046,7 @@ builds:
             - repo: docker.apple.com/comet-dev/spark${VERSION}
 
   - group: pr-image
-    branchName: master
+    branchName: mastertmp
     version: 3.3_2.12
     trigger:
       gitPush: false
@@ -2064,7 +2064,7 @@ builds:
       <<: *pr_image_package
 
   - group: pr-image
-    branchName: master
+    branchName: mastertmp
     version: 3.3_2.13
     trigger:
       gitPush: false
