@@ -886,7 +886,7 @@ builds:
       release: false
       freeform:
         - publish:
-            - repo: oss-patched-local
+            - repo: oss-patched-snapshot-local
     finally:
       pipelineChain:
         - pipeline: build-artifacts-mastertmp-build-3.2_2.12
