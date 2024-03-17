@@ -869,8 +869,8 @@ builds:
         - make clean
 
         # Extract the native libraries into the "common" tree
-        - mkdir -p common/target/classes/com/apple/comet
-        - for URL in $BUILD_PARAM_ARTIFACT_X86_64 $BUILD_PARAM_ARTIFACT_AARCH64; do (cd common/target/classes/com/apple/comet && wget -q -O - $URL | jar -xv linux darwin); done
+        - mkdir -p common/target/classes/org/apache/comet
+        - for URL in $BUILD_PARAM_ARTIFACT_X86_64 $BUILD_PARAM_ARTIFACT_AARCH64; do (cd common/target/classes/org/apache/comet && wget -q -O - $URL | jar -xv linux darwin); done
 
         # Build and prepare for publishing
         - SPARK_HOME=`pwd` ./mvnw ${PROFILES} deploy -DaltDeploymentRepository="local-release::default::file://$PWD/$LOCAL_REPO"
@@ -1372,8 +1372,8 @@ builds:
         - make clean
 
         # Extract the native libraries into the "common" tree
-        - mkdir -p common/target/classes/com/apple/comet
-        - for URL in $BUILD_PARAM_ARTIFACT_X86_64 $BUILD_PARAM_ARTIFACT_AARCH64; do (cd common/target/classes/com/apple/comet && wget -q -O - $URL | jar -xv linux darwin); done
+        - mkdir -p common/target/classes/org/apache/comet
+        - for URL in $BUILD_PARAM_ARTIFACT_X86_64 $BUILD_PARAM_ARTIFACT_AARCH64; do (cd common/target/classes/org/apache/comet && wget -q -O - $URL | jar -xv linux darwin); done
 
         # Build and prepare for publishing
         - ./mvnw ${PROFILES} deploy -Prelease -DskipTests -DaltDeploymentRepository="local-release::default::file://$PWD/$LOCAL_REPO"
@@ -1810,8 +1810,8 @@ builds:
         - make clean
 
         # Extract the native libraries into the "common" tree
-        - mkdir -p common/target/classes/com/apple/comet
-        - for URL in $BUILD_PARAM_ARTIFACT_X86_64 $BUILD_PARAM_ARTIFACT_AARCH64; do (cd common/target/classes/com/apple/comet && wget -q -O - $URL | jar -xv linux darwin); done
+        - mkdir -p common/target/classes/org/apache/comet
+        - for URL in $BUILD_PARAM_ARTIFACT_X86_64 $BUILD_PARAM_ARTIFACT_AARCH64; do (cd common/target/classes/org/apache/comet && wget -q -O - $URL | jar -xv linux darwin); done
 
         # Build and prepare for publishing
         - ./mvnw ${PROFILES} deploy -DaltDeploymentRepository="local-release::default::file://$PWD/$LOCAL_REPO" -DskipTests
@@ -2026,7 +2026,7 @@ builds:
         - echo 'USER root' >> dist/kubernetes/dockerfiles/spark/Dockerfile
 
         # Extract Boson native library
-        - (mkdir -p dist/native; cd dist/native; jar -xvf ../jars/comet-spark-spark*.jar com/apple/comet/linux; mv -v com/apple/comet/linux .; rm -rf com)
+        - (mkdir -p dist/native; cd dist/native; jar -xvf ../jars/comet-spark-spark*.jar org/apache/comet/linux; mv -v org/apache/comet/linux .; rm -rf com)
         - echo 'COPY native /opt/spark/native' >> dist/kubernetes/dockerfiles/spark/Dockerfile
         - echo 'RUN if [ "$(uname -m)" == "x86_64" ]; then cp /opt/spark/native/linux/amd64/libcomet.so /lib64/lib/x86_64-linux-gnu/libcomet.so; fi' >> dist/kubernetes/dockerfiles/spark/Dockerfile
         - echo 'RUN if [ "$(uname -m)" == "aarch64" ]; then cp /opt/spark/native/linux/aarch64/libcomet.so /lib64/aarch64-linux-gnu/libcomet.so; fi' >> dist/kubernetes/dockerfiles/spark/Dockerfile
