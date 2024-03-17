@@ -791,7 +791,7 @@ builds:
       release: false
       freeform:
         - publish:
-            - repo: oss-patched-snapshot-local
+            - repo: m2:oss-patched
     finally:
       pipelineChain:
         - pipeline: build-artifacts-mastertmp-build-platform
