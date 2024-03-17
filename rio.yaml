@@ -886,7 +886,7 @@ builds:
       release: false
       freeform:
         - publish:
-            - repo: pie-snapshot-local:pie-release-local
+            - repo: oss-patched-local
     finally:
       pipelineChain:
         - pipeline: build-artifacts-mastertmp-build-3.2_2.12
@@ -1287,7 +1287,7 @@ builds:
       release: true
       freeform:
         - publish:
-            - repo: pie-snapshot-local:pie-release-local
+            - repo: oss-patched-local
     finally:
       pipelineChain:
         - pipeline: build-artifacts-release-build-platform
@@ -1382,7 +1382,7 @@ builds:
       release: true
       freeform:
         - publish:
-            - repo: pie-snapshot-local:pie-release-local
+            - repo: oss-patched-local
     finally:
       pipelineChain:
         - pipeline: build-artifacts-release-build-3.2_2.12
@@ -1702,7 +1702,7 @@ builds:
       release: false
       freeform:
         - publish:
-            - repo: pie-snapshot-local:pie-release-local
+            - repo: oss-patched-local
     finally:
       pipelineChain:
         - pipeline: pr-build-artifacts-mastertmp-build-platform
@@ -1820,7 +1820,7 @@ builds:
       release: false
       freeform:
         - publish:
-            - repo: pie-snapshot-local:pie-release-local
+            - repo: oss-patched-local
     finally:
       pipelineChain:
         - pipeline: pr-build-artifacts-mastertmp-build-3.2_2.12
