@@ -878,11 +878,13 @@ under the License.
             <exclude>**/dependency-reduced-pom.xml</exclude>
             <exclude>**/testdata/**</exclude>
             <exclude>**/.lldbinit</exclude>
+            <exclude>rio.yaml</exclude>
             <exclude>rust-toolchain</exclude>
             <exclude>Makefile</exclude>
             <exclude>dev/Dockerfile*</exclude>
             <exclude>dev/diff/**</exclude>
             <exclude>dev/deploy-file</exclude>
+            <exclude>dev/rio-context-file-artifacts.sh</exclude>
             <exclude>**/test/resources/**</exclude>
             <exclude>**/benchmarks/*.txt</exclude>
             <exclude>**/inspections/*.txt</exclude>
