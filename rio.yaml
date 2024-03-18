@@ -715,7 +715,7 @@ builds:
           perApplication: false
           version: stage1
           publish:
-            - repo: docker.apple.com/pie/boson-builder
+            - repo: docker.apple.com/pie/comet-builder
     finally:
       pipelineChain:
         - pipeline: builder-mastertmp-publish-stage2
@@ -736,7 +736,7 @@ builds:
           perApplication: false
           version: stage2
           publish:
-            - repo: docker.apple.com/pie/boson-builder
+            - repo: docker.apple.com/pie/comet-builder
     finally:
       pipelineChain:
         - pipeline: builder-mastertmp-publish-stage3
@@ -755,7 +755,7 @@ builds:
         - dockerfilePath: dev/Dockerfile-stage3
           perApplication: false
           publish:
-            - repo: docker.apple.com/pie/boson-builder
+            - repo: docker.apple.com/pie/comet-builder
 
   - branchName: mastertmp
     group: builder-ubi8
@@ -772,7 +772,7 @@ builds:
         - dockerfilePath: dev/Dockerfile-ubi8
           perApplication: false
           publish:
-            - repo: docker.apple.com/pie/boson-builder-ubi8
+            - repo: docker.apple.com/pie/comet-builder-ubi8
 
   - group: build
     branchName: mastertmp
