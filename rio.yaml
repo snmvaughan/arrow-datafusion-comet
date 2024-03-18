@@ -111,6 +111,7 @@ builds:
 
   - <<: *comet-java
     version: 3.4_2.12
+    disable: false
     machine:
       <<: *rio3-machine
       env:
@@ -122,6 +123,7 @@ builds:
 
   - <<: *comet-java
     version: 3.4_2.13
+    disable: false
     machine:
       <<: *rio3-machine
       env:
@@ -135,6 +137,7 @@ builds:
     group: test-comet-tpcds-queries
     branchName: mastertmp
     version: 3.4_2.12
+    disable: false
     machine:
       <<: *rio3-machine
       targetPlatforms:
@@ -157,6 +160,7 @@ builds:
     group: test-comet-tpch-queries
     branchName: mastertmp
     version: 3.4_2.12
+    disable: false
     machine:
       <<: *rio3-machine
       targetPlatforms:
@@ -265,6 +269,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-catalyst
     version: 3.4_2.12
+    disable: false
     machine:
       <<: *rio3-machine
       env:
@@ -284,6 +289,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-catalyst
     version: 3.4_2.13
+    disable: false
     machine:
       <<: *rio3-machine
       env:
@@ -339,6 +345,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-core-1
     version: 3.4_2.12
+    disable: false
     machine:
       <<: *rio3-machine
       # NOTE: Requires ubi8 due to leveldbjni and graviton
@@ -358,6 +365,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-core-1
     version: 3.4_2.13
+    disable: false
     machine:
       <<: *rio3-machine
       # NOTE: Requires ubi8 due to leveldbjni and graviton
@@ -411,6 +419,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-core-2
     version: 3.4_2.12
+    disable: false
     machine:
       <<: *rio3-machine
       env:
@@ -428,6 +437,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-core-2
     version: 3.4_2.13
+    disable: false
     machine:
       <<: *rio3-machine
       env:
@@ -445,6 +455,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-core-3
     version: 3.4_2.12
+    disable: false
     machine:
       <<: *rio3-machine
       env:
@@ -462,6 +473,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-core-3
     version: 3.4_2.13
+    disable: false
     machine:
       <<: *rio3-machine
       env:
@@ -513,6 +525,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-hive-1
     version: 3.4_2.12
+    disable: false
     machine:
       <<: *rio3-machine
       env:
@@ -530,6 +543,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-hive-1
     version: 3.4_2.13
+    disable: false
     machine:
       <<: *rio3-machine
       env:
@@ -581,6 +595,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-hive-2
     version: 3.4_2.12
+    disable: false
     machine:
       <<: *rio3-machine
       env:
@@ -598,6 +613,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-hive-2
     version: 3.4_2.13
+    disable: false
     machine:
       <<: *rio3-machine
       env:
@@ -672,6 +688,7 @@ builds:
 
   - <<: *comet-iceberg
     version: 3.4_2.12
+    disable: false
     machine:
       <<: *rio3-machine
       env:
@@ -689,6 +706,7 @@ builds:
 
   - <<: *comet-iceberg
     version: 3.4_2.13
+    disable: false
     machine:
       <<: *rio3-machine
       env:
@@ -958,6 +976,7 @@ builds:
   - group: build
     branchName: mastertmp
     version: 3.4_2.12
+    disable: false
     trigger:
       gitPush: false
     machine:
@@ -980,6 +999,7 @@ builds:
   - group: build
     branchName: mastertmp
     version: 3.4_2.13
+    disable: false
     trigger:
       gitPush: false
     machine:
@@ -1058,6 +1078,7 @@ builds:
   - group: build-artifacts
     branchName: mastertmp
     version: 3.4_2.12
+    disable: false
     trigger:
       gitPush: false
     machine:
@@ -1074,6 +1095,7 @@ builds:
   - group: build-artifacts
     branchName: mastertmp
     version: 3.4_2.13
+    disable: false
     trigger:
       gitPush: false
     machine:
@@ -1171,6 +1193,7 @@ builds:
   - group: image
     branchName: mastertmp
     version: 3.4_2.12
+    disable: false
     trigger:
       gitPush: false
     machine:
@@ -1189,6 +1212,7 @@ builds:
   - group: image
     branchName: mastertmp
     version: 3.4_2.13
+    disable: false
     trigger:
       gitPush: false
     machine:
@@ -1266,6 +1290,7 @@ builds:
   - group: nightly
     branchName: mastertmp
     version: 3.4_2.12
+    disable: false
     trigger:
       timer: '@midnight'
       gitPush: false
@@ -1282,6 +1307,7 @@ builds:
   - group: nightly
     branchName: mastertmp
     version: 3.4_2.13
+    disable: false
     trigger:
       timer: '@midnight'
       gitPush: false
@@ -1462,6 +1488,7 @@ builds:
   - group: build
     branchName: release
     version: 3.4_2.12
+    disable: false
     trigger:
       gitPush: false
     machine:
@@ -1482,6 +1509,7 @@ builds:
   - group: build
     branchName: release
     version: 3.4_2.13
+    disable: false
     trigger:
       gitPush: false
     machine:
@@ -1555,6 +1583,7 @@ builds:
   - group: build-artifacts
     branchName: release
     version: 3.4_2.12
+    disable: false
     trigger:
       gitPush: false
     machine:
@@ -1571,6 +1600,7 @@ builds:
   - group: build-artifacts
     branchName: release
     version: 3.4_2.13
+    disable: false
     trigger:
       gitPush: false
     machine:
@@ -1669,6 +1699,7 @@ builds:
   - group: image
     branchName: release
     version: 3.4_2.12
+    disable: false
     trigger:
       gitPush: false
     machine:
@@ -1687,6 +1718,7 @@ builds:
   - group: image
     branchName: release
     version: 3.4_2.13
+    disable: false
     trigger:
       gitPush: false
     machine:
@@ -1918,6 +1950,7 @@ builds:
   - group: pr-build
     branchName: mastertmp
     version: 3.4_2.12
+    disable: false
     trigger:
       gitPush: false
     machine:
@@ -1945,6 +1978,7 @@ builds:
   - group: pr-build
     branchName: mastertmp
     version: 3.4_2.13
+    disable: false
     trigger:
       gitPush: false
     machine:
