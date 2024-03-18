@@ -8,8 +8,8 @@ ARG SCALA_VERSION
 
 USER root
 
-RUN rm ${SPARK_HOME}/jars/boson*
+RUN rm ${SPARK_HOME}/jars/comet*
 
-COPY spark/target/boson-spark-spark${SPARK_VERSION}_${SCALA_VERSION}-*SNAPSHOT.jar ${SPARK_HOME}/jars
+COPY spark/target/comet-spark-spark${SPARK_VERSION}_${SCALA_VERSION}-*SNAPSHOT.jar ${SPARK_HOME}/jars
 
 USER 185

@@ -1,4 +1,4 @@
-FROM docker.apple.com/pie/boson-builder:stage2
+FROM docker.apple.com/pie/comet-builder:stage2
 
 # Build OSXCross
 # To packaging MacOSX sdk on a local Mac with Xcode installed:
