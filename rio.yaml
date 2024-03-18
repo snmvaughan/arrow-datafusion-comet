@@ -12,8 +12,8 @@ machine:
   baseImage: docker.apple.com/pie/boson-builder:latest
   env: &base_env
     LOCAL_REPO: ".dist/local-repo"
-    BOSON: true
-    BOSON_VERSION: 0.3.30-SNAPSHOT
+    COMET: true
+    COMET_VERSION: 0.3.30-SNAPSHOT
     RUST_BACKTRACE: full
     LANG: "en_US.UTF-8"
     LC_ALL: "en_US.UTF-8"
@@ -21,7 +21,7 @@ machine:
 
 builds:
   - group: test-comet-rust
-    branchName: main-apple
+    branchName: mastertmp
     version: platform
     machine: &rio3-machine
       baseImage: docker.apple.com/pie/boson-builder:latest
@@ -51,7 +51,7 @@ builds:
         - cargo clippy --color=never -- -D warnings
         - cargo check --benches
         - export LD_LIBRARY_PATH=${LD_LIBRARY_PATH:+${LD_LIBRARY_PATH}:}$JAVA_HOME/lib:$JAVA_HOME/lib/server
-        # We need to compile BosonException so that the cargo test can pass
+        # We need to compile CometException so that the cargo test can pass
         - (cd ../common && ../mvnw clean compile -DskipTests)
 
         # We create the target directory for the test results, following the naming convention used
@@ -74,7 +74,7 @@ builds:
 
   - &comet-java
     group: test-comet-java
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.2_2.12
     machine:
       <<: *rio3-machine
@@ -130,7 +130,7 @@ builds:
 
   - &comet-tpcds
     group: test-comet-tpcds-queries
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.4_2.12
     machine:
       <<: *rio3-machine
@@ -148,11 +148,11 @@ builds:
         - cd ../..
         - make release
         - cd spark && MAVEN_OPTS='-Xmx20g' ../mvnw exec:java -Dexec.mainClass="org.apache.spark.sql.GenTPCDSData" -Dexec.classpathScope="test" -Dexec.cleanupDaemonThreads="false" -Dexec.args="--dsdgenDir `pwd`/../tpcds-kit/tools --location `pwd`/tpcds --scaleFactor 1  --numPartitions 1"
-        - cd .. && SPARK_HOME=`pwd` SPARK_TPCDS_DATA=`pwd`/spark/tpcds ./mvnw -Dsuites=org.apache.spark.sql.BosonTPCDSQuerySuite test
+        - cd .. && SPARK_HOME=`pwd` SPARK_TPCDS_DATA=`pwd`/spark/tpcds ./mvnw -Dsuites=org.apache.spark.sql.CometTPCDSQuerySuite test
 
   - &comet-tpch
     group: test-comet-tpch-queries
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.4_2.12
     machine:
       <<: *rio3-machine
@@ -166,11 +166,11 @@ builds:
       steps:
         - make release
         - cd spark && MAVEN_OPTS='-Xmx20g' ../mvnw exec:java -Dexec.mainClass="org.apache.spark.sql.GenTPCHData" -Dexec.classpathScope="test" -Dexec.cleanupDaemonThreads="false" -Dexec.args="--location `pwd` --scaleFactor 1 --numPartitions 1 --overwrite"
-        - cd .. && SPARK_HOME=`pwd` SPARK_TPCH_DATA=`pwd`/spark/tpch/sf1_parquet ./mvnw -Dsuites=org.apache.spark.sql.BosonTPCHQuerySuite test
+        - cd .. && SPARK_HOME=`pwd` SPARK_TPCH_DATA=`pwd`/spark/tpch/sf1_parquet ./mvnw -Dsuites=org.apache.spark.sql.CometTPCHQuerySuite test
 
   - &comet-spark-32
     group: test-spark-sql-catalyst
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.2_2.12
     timeout: 180
     machine: &rio2-machine
@@ -219,7 +219,7 @@ builds:
   - &comet-spark
     group: test-spark-sql-catalyst
     version: 3.3_2.12
-    branchName: main-apple
+    branchName: mastertmp
     timeout: 180
     machine:
       <<: *rio3-machine
@@ -600,27 +600,27 @@ builds:
 
   - &comet-iceberg
     group: test-iceberg
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.2_2.12
     machine:
       <<: *rio3-machine
       env:
         <<: *proxy_env
         PROFILES: "-Pspark-3.2"
-        BOSON_TAG: 3.2_2.12
+        COMET_TAG: 3.2_2.12
         ICEBERG_BRANCH: apple-0.13.x
         ICEBERG_TAG: 3.2
         ICEBERG_SCALA_VERSION: 2.12
     build: &comet-iceberg-build
       template: freestyle:v4:build
       steps:
-        - export NEXT_VERSION="$BOSON_VERSION-iceberg"
+        - export NEXT_VERSION="$COMET_VERSION-iceberg"
         - ./mvnw versions:set -DnewVersion="$NEXT_VERSION"
         - PROFILES="${PROFILES}" make clean release
         - rm -rf apache-incubator-iceberg
         - git clone git@github.pie.apple.com:IPR/apache-incubator-iceberg.git --depth 1 --branch ${ICEBERG_BRANCH}
         - cd apache-incubator-iceberg
-        -  sed -i -E "s|(com.apple.pie.comet:comet-(common\|spark)-spark${BOSON_TAG} = )(.*)|\1${NEXT_VERSION}|g" versions.props
+        -  sed -i -E "s|(com.apple.pie.comet:comet-(common\|spark)-spark${COMET_TAG} = )(.*)|\1${NEXT_VERSION}|g" versions.props
         - ./gradlew ${PROXY_OPTS} -DscalaVersion=${ICEBERG_SCALA_VERSION} :iceberg-spark:iceberg-spark-${ICEBERG_TAG}:test :iceberg-spark:iceberg-spark-runtime-${ICEBERG_TAG}:test
     reports: &test_iceberg_reports
       junit:
@@ -636,7 +636,7 @@ builds:
       env:
         <<: *proxy_env
         PROFILES: "-Pspark-3.3"
-        BOSON_TAG: 3.3_2.12
+        COMET_TAG: 3.3_2.12
         ICEBERG_BRANCH: apple-1.0.x-preview
         ICEBERG_TAG: 3.3_2.12
         ICEBERG_SCALA_VERSION: 2.12
@@ -648,7 +648,7 @@ builds:
       env:
         <<: *proxy_env
         PROFILES: "-Pspark-3.3,scala-2.13"
-        BOSON_TAG: 3.3_2.13
+        COMET_TAG: 3.3_2.13
         ICEBERG_BRANCH: apple-1.0.x-preview
         ICEBERG_TAG: 3.3_2.13
         ICEBERG_SCALA_VERSION: 2.13
@@ -660,7 +660,7 @@ builds:
       env:
         <<: *proxy_env
         PROFILES: "-Pspark-3.4"
-        BOSON_TAG: 3.4_2.12
+        COMET_TAG: 3.4_2.12
         ICEBERG_BRANCH: apple-1.3.x
         ICEBERG_TAG: 3.4_2.12
         ICEBERG_SCALA_VERSION: 2.12
@@ -677,7 +677,7 @@ builds:
       env:
         <<: *proxy_env
         PROFILES: "-Pspark-3.4,scala-2.13"
-        BOSON_TAG: 3.4_2.13
+        COMET_TAG: 3.4_2.13
         ICEBERG_BRANCH: apple-1.3.x
         ICEBERG_TAG: 3.4_2.13
         ICEBERG_SCALA_VERSION: 2.13
@@ -687,7 +687,7 @@ builds:
     finally:
       <<: *slack-no-notification
 
-  - branchName: main-apple
+  - branchName: mastertmp
     group: builder
     version: stage1
     trigger:
@@ -718,9 +718,9 @@ builds:
             - repo: docker.apple.com/pie/boson-builder
     finally:
       pipelineChain:
-        - pipeline: builder-main-apple-publish-stage2
+        - pipeline: builder-mastertmp-publish-stage2
 
-  - branchName: main-apple
+  - branchName: mastertmp
     group: builder
     version: stage2
     timeout: 240
@@ -739,9 +739,9 @@ builds:
             - repo: docker.apple.com/pie/boson-builder
     finally:
       pipelineChain:
-        - pipeline: builder-main-apple-publish-stage3
+        - pipeline: builder-mastertmp-publish-stage3
 
-  - branchName: main-apple
+  - branchName: mastertmp
     group: builder
     version: stage3
     trigger:
@@ -757,7 +757,7 @@ builds:
           publish:
             - repo: docker.apple.com/pie/boson-builder
 
-  - branchName: main-apple
+  - branchName: mastertmp
     group: builder-ubi8
     trigger:
       # Run once a week, at a random but consistent offset, to automatically update rust, rust index, os patches, etc.
@@ -775,7 +775,7 @@ builds:
             - repo: docker.apple.com/pie/boson-builder-ubi8
 
   - group: build
-    branchName: main-apple
+    branchName: mastertmp
     version: platform
     machine:
       <<: *rio3-machine
@@ -784,7 +784,7 @@ builds:
     build:
       template: freestyle:v4:publish
       steps:
-        # Build Boson
+        # Build Comet
         - make clean core-${RIO_ARCH}
         - ci stage-lib --many-many-artifacts "$LOCAL_REPO/**/*" --exclude "**/*.xml" --exclude "**/*.md5" --exclude "**/*.sha1"
     package:
@@ -794,12 +794,12 @@ builds:
             - repo: oss-patched-snapshot-local
     finally:
       pipelineChain:
-        - pipeline: build-artifacts-main-apple-build-platform
+        - pipeline: build-artifacts-mastertmp-build-platform
 
   # Capture the build artifacts from the RIO_CONTEXT_FILE, and convert them to build arguments for
   # the downstream jobs so that they can be restarted when there is a Rio hiccup.
   - group: build-artifacts
-    branchName: main-apple
+    branchName: mastertmp
     version: platform
     trigger:
       gitPush: false
@@ -813,31 +813,31 @@ builds:
         - cat $RIO_CONTEXT_FILE
     finally:
       pipelineChain:
-        - pipeline: build-main-apple-publish-3.2_2.12
+        - pipeline: build-mastertmp-publish-3.2_2.12
           buildArguments:
             - name: "ARTIFACT_X86_64"
               value: "${ARTIFACT_X86_64}"
             - name: "ARTIFACT_AARCH64"
               value: "${ARTIFACT_AARCH64}"
-        - pipeline: build-main-apple-publish-3.3_2.12
+        - pipeline: build-mastertmp-publish-3.3_2.12
           buildArguments:
             - name: "ARTIFACT_X86_64"
               value: "${ARTIFACT_X86_64}"
             - name: "ARTIFACT_AARCH64"
               value: "${ARTIFACT_AARCH64}"
-        - pipeline: build-main-apple-publish-3.3_2.13
+        - pipeline: build-mastertmp-publish-3.3_2.13
           buildArguments:
             - name: "ARTIFACT_X86_64"
               value: "${ARTIFACT_X86_64}"
             - name: "ARTIFACT_AARCH64"
               value: "${ARTIFACT_AARCH64}"
-        - pipeline: build-main-apple-publish-3.4_2.12
+        - pipeline: build-mastertmp-publish-3.4_2.12
           buildArguments:
             - name: "ARTIFACT_X86_64"
               value: "${ARTIFACT_X86_64}"
             - name: "ARTIFACT_AARCH64"
               value: "${ARTIFACT_AARCH64}"
-        - pipeline: build-main-apple-publish-3.4_2.13
+        - pipeline: build-mastertmp-publish-3.4_2.13
           buildArguments:
             - name: "ARTIFACT_X86_64"
               value: "${ARTIFACT_X86_64}"
@@ -845,7 +845,7 @@ builds:
               value: "${ARTIFACT_AARCH64}"
 
   - group: build
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.2_2.12
     trigger:
       gitPush: false
@@ -889,10 +889,10 @@ builds:
             - repo: oss-patched-snapshot-local
     finally:
       pipelineChain:
-        - pipeline: build-artifacts-main-apple-build-3.2_2.12
+        - pipeline: build-artifacts-mastertmp-build-3.2_2.12
 
   - group: build
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.3_2.12
     trigger:
       gitPush: false
@@ -911,10 +911,10 @@ builds:
       <<: *snapshot_build_package
     finally:
       pipelineChain:
-        - pipeline: build-artifacts-main-apple-build-3.3_2.12
+        - pipeline: build-artifacts-mastertmp-build-3.3_2.12
 
   - group: build
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.3_2.13
     trigger:
       gitPush: false
@@ -933,10 +933,10 @@ builds:
       <<: *snapshot_build_package
     finally:
       pipelineChain:
-        - pipeline: build-artifacts-main-apple-build-3.3_2.13
+        - pipeline: build-artifacts-mastertmp-build-3.3_2.13
 
   - group: build
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.4_2.12
     trigger:
       gitPush: false
@@ -955,10 +955,10 @@ builds:
       <<: *snapshot_build_package
     finally:
       pipelineChain:
-        - pipeline: build-artifacts-main-apple-build-3.4_2.12
+        - pipeline: build-artifacts-mastertmp-build-3.4_2.12
 
   - group: build
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.4_2.13
     trigger:
       gitPush: false
@@ -977,12 +977,12 @@ builds:
       <<: *snapshot_build_package
     finally:
       pipelineChain:
-        - pipeline: build-artifacts-main-apple-build-3.4_2.13
+        - pipeline: build-artifacts-mastertmp-build-3.4_2.13
 
   # Capture the build artifacts from the RIO_CONTEXT_FILE, and convert them to build arguments for
   # the downstream jobs so that they can be restarted when there is a Rio hiccup.
   - group: build-artifacts
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.2_2.12
     trigger:
       gitPush: false
@@ -995,13 +995,13 @@ builds:
         - cat $RIO_CONTEXT_FILE
     finally:
       pipelineChain:
-        - pipeline: image-main-apple-publish-3.2_2.12
+        - pipeline: image-mastertmp-publish-3.2_2.12
           buildArguments:
             - name: "ARTIFACT"
               value: "${ARTIFACT}"
 
   - group: build-artifacts
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.3_2.12
     trigger:
       gitPush: false
@@ -1011,13 +1011,13 @@ builds:
       <<: *build-artifacts-build
     finally:
       pipelineChain:
-        - pipeline: image-main-apple-publish-3.3_2.12
+        - pipeline: image-mastertmp-publish-3.3_2.12
           buildArguments:
             - name: "ARTIFACT"
               value: "${ARTIFACT}"
 
   - group: build-artifacts
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.3_2.13
     trigger:
       gitPush: false
@@ -1027,13 +1027,13 @@ builds:
       <<: *build-artifacts-build
     finally:
       pipelineChain:
-        - pipeline: image-main-apple-publish-3.3_2.13
+        - pipeline: image-mastertmp-publish-3.3_2.13
           buildArguments:
             - name: "ARTIFACT"
               value: "${ARTIFACT}"
 
   - group: build-artifacts
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.4_2.12
     trigger:
       gitPush: false
@@ -1043,13 +1043,13 @@ builds:
       <<: *build-artifacts-build
     finally:
       pipelineChain:
-        - pipeline: image-main-apple-publish-3.4_2.12
+        - pipeline: image-mastertmp-publish-3.4_2.12
           buildArguments:
             - name: "ARTIFACT"
               value: "${ARTIFACT}"
 
   - group: build-artifacts
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.4_2.13
     trigger:
       gitPush: false
@@ -1059,13 +1059,13 @@ builds:
       <<: *build-artifacts-build
     finally:
       pipelineChain:
-        - pipeline: image-main-apple-publish-3.4_2.13
+        - pipeline: image-mastertmp-publish-3.4_2.13
           buildArguments:
             - name: "ARTIFACT"
               value: "${ARTIFACT}"
 
   - group: image
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.2_2.12
     trigger:
       gitPush: false
@@ -1084,12 +1084,12 @@ builds:
       steps:
         - if [ -z "${BUILD_PARAM_ARTIFACT}" ]; then echo 'ARTIFACT is required!'; exit 1; fi
 
-        # Use the upstream published Boson
-        - BOSON_VERSION=$(echo ${BUILD_PARAM_ARTIFACT} | sed 's/^.*_[^-]*-//' | sed 's/.jar$//' | head -1)
-        - echo "BOSON_VERSION = ${BOSON_VERSION}"
+        # Use the upstream published Comet
+        - COMET_VERSION=$(echo ${BUILD_PARAM_ARTIFACT} | sed 's/^.*_[^-]*-//' | sed 's/.jar$//' | head -1)
+        - echo "COMET_VERSION = ${COMET_VERSION}"
 
         # Configure Spark
-        - dev/install-comet-spark.sh --use-existing-comet "$BOSON_VERSION"
+        - dev/install-comet-spark.sh --use-existing-comet "$COMET_VERSION"
         - source apache-spark/comet-parameters.sh
         - cd apache-spark
 
@@ -1107,7 +1107,7 @@ builds:
             - repo: docker.apple.com/comet-dev/spark${VERSION}
 
   - group: image
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.3_2.12
     trigger:
       gitPush: false
@@ -1125,7 +1125,7 @@ builds:
       <<: *snapshot_image_package
 
   - group: image
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.3_2.13
     trigger:
       gitPush: false
@@ -1143,7 +1143,7 @@ builds:
       <<: *snapshot_image_package
 
   - group: image
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.4_2.12
     trigger:
       gitPush: false
@@ -1161,7 +1161,7 @@ builds:
       <<: *snapshot_image_package
 
   - group: image
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.4_2.13
     trigger:
       gitPush: false
@@ -1179,7 +1179,7 @@ builds:
       <<: *snapshot_image_package
 
   - group: nightly
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.2_2.12
     trigger:
       timer: '@midnight'
@@ -1203,7 +1203,7 @@ builds:
             - repo: docker.apple.com/comet-dev/spark${VERSION}
 
   - group: nightly
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.3_2.12
     trigger:
       timer: '@midnight'
@@ -1219,7 +1219,7 @@ builds:
       <<: *nightly_image_package
 
   - group: nightly
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.3_2.13
     trigger:
       timer: '@midnight'
@@ -1235,7 +1235,7 @@ builds:
       <<: *nightly_image_package
 
   - group: nightly
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.4_2.12
     trigger:
       timer: '@midnight'
@@ -1251,7 +1251,7 @@ builds:
       <<: *nightly_image_package
 
   - group: nightly
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.4_2.13
     trigger:
       timer: '@midnight'
@@ -1273,14 +1273,14 @@ builds:
       <<: *rio3-machine
       env:
         <<: *proxy_env
-    # This is the same as the main-apple branch build except for the updated version (non-snapshot)
+    # This is the same as the mastertmp branch build except for the updated version (non-snapshot)
     build:
       template: freestyle:v4:publish
       steps:
         # Update to release version
         - ./mvnw com.apple.cie.rio:rio-maven-plugin:remove-snapshot org.codehaus.mojo:versions-maven-plugin:set
 
-        # Build Boson
+        # Build Comet
         - make clean core-${RIO_ARCH}
         - ci stage-lib --many-many-artifacts "$LOCAL_REPO/**/*" --exclude "**/*.xml" --exclude "**/*.md5" --exclude "**/*.sha1"
     package:
@@ -1569,12 +1569,12 @@ builds:
       steps:
         - if [ -z "${BUILD_PARAM_ARTIFACT}" ]; then echo 'ARTIFACT is required!'; exit 1; fi
 
-        # Use the upstream published Boson
-        - BOSON_VERSION=$(echo ${BUILD_PARAM_ARTIFACT} | sed 's/^.*_[^-]*-//' | sed 's/.jar$//' | head -1)
-        - echo "BOSON_VERSION = ${BOSON_VERSION}"
+        # Use the upstream published Comet
+        - COMET_VERSION=$(echo ${BUILD_PARAM_ARTIFACT} | sed 's/^.*_[^-]*-//' | sed 's/.jar$//' | head -1)
+        - echo "COMET_VERSION = ${COMET_VERSION}"
 
         # Configure Spark
-        - dev/install-comet-spark.sh --use-existing-comet "$BOSON_VERSION"
+        - dev/install-comet-spark.sh --use-existing-comet "$COMET_VERSION"
         - source apache-spark/comet-parameters.sh
         - cd apache-spark
 
@@ -1665,7 +1665,7 @@ builds:
       <<: *release_image_package
 
   - group: pr-build
-    branchName: main-apple
+    branchName: mastertmp
     version: start
     machine:
       <<: *rio3-machine
@@ -1688,14 +1688,14 @@ builds:
         - git log -n 1
 
         # Switch to PR version
-        - BOSON_VERSION=$(./mvnw -nsu -q $PROFILES help:evaluate -Dexpression=project.version -DforceStdout 2>/dev/null | sed -e "s/-SNAPSHOT/-pr${BUILD_PARAM_PR_NUMBER}-SNAPSHOT/")
-        - ./mvnw versions:set -DnewVersion=$BOSON_VERSION
-        - echo "BOSON_VERSION=${BOSON_VERSION}"
+        - COMET_VERSION=$(./mvnw -nsu -q $PROFILES help:evaluate -Dexpression=project.version -DforceStdout 2>/dev/null | sed -e "s/-SNAPSHOT/-pr${BUILD_PARAM_PR_NUMBER}-SNAPSHOT/")
+        - ./mvnw versions:set -DnewVersion=$COMET_VERSION
+        - echo "COMET_VERSION=${COMET_VERSION}"
 
         # Change the strip configuration
         - if [ "${BUILD_PARAM_STRIP}" != "debuginfo" ]; then sed -i.bak "s/strip = \"debuginfo\"/strip = \"${BUILD_PARAM_STRIP}\"/" core/Cargo.toml; fi
 
-        # Build Boson
+        # Build Comet
         - make clean core-${RIO_ARCH}
         - ci stage-lib --many-many-artifacts "$LOCAL_REPO/**/*" --exclude "**/*.xml" --exclude "**/*.md5" --exclude "**/*.sha1"
     package:
@@ -1705,7 +1705,7 @@ builds:
             - repo: oss-patched-local
     finally:
       pipelineChain:
-        - pipeline: pr-build-artifacts-main-apple-build-platform
+        - pipeline: pr-build-artifacts-mastertmp-build-platform
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
@@ -1713,7 +1713,7 @@ builds:
   # Capture the build artifacts from the RIO_CONTEXT_FILE, and convert them to build arguments for
   # the downstream jobs so that they can be restarted when there is a Rio hiccup.
   - group: pr-build-artifacts
-    branchName: main-apple
+    branchName: mastertmp
     version: platform
     trigger:
       gitPush: false
@@ -1730,7 +1730,7 @@ builds:
         - cat $RIO_CONTEXT_FILE
     finally:
       pipelineChain:
-        - pipeline: pr-build-main-apple-publish-3.2_2.12
+        - pipeline: pr-build-mastertmp-publish-3.2_2.12
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
@@ -1738,7 +1738,7 @@ builds:
               value: "${ARTIFACT_X86_64}"
             - name: "ARTIFACT_AARCH64"
               value: "${ARTIFACT_AARCH64}"
-        - pipeline: pr-build-main-apple-publish-3.3_2.12
+        - pipeline: pr-build-mastertmp-publish-3.3_2.12
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
@@ -1746,7 +1746,7 @@ builds:
               value: "${ARTIFACT_X86_64}"
             - name: "ARTIFACT_AARCH64"
               value: "${ARTIFACT_AARCH64}"
-        - pipeline: pr-build-main-apple-publish-3.3_2.13
+        - pipeline: pr-build-mastertmp-publish-3.3_2.13
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
@@ -1754,7 +1754,7 @@ builds:
               value: "${ARTIFACT_X86_64}"
             - name: "ARTIFACT_AARCH64"
               value: "${ARTIFACT_AARCH64}"
-        - pipeline: pr-build-main-apple-publish-3.4_2.12
+        - pipeline: pr-build-mastertmp-publish-3.4_2.12
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
@@ -1762,7 +1762,7 @@ builds:
               value: "${ARTIFACT_X86_64}"
             - name: "ARTIFACT_AARCH64"
               value: "${ARTIFACT_AARCH64}"
-        - pipeline: pr-build-main-apple-publish-3.4_2.13
+        - pipeline: pr-build-mastertmp-publish-3.4_2.13
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
@@ -1772,7 +1772,7 @@ builds:
               value: "${ARTIFACT_AARCH64}"
 
   - group: pr-build
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.2_2.12
     trigger:
       gitPush: false
@@ -1799,9 +1799,9 @@ builds:
         - git log -n 1
 
         # Switch to PR version
-        - BOSON_VERSION=$(./mvnw -nsu -q $PROFILES help:evaluate -Dexpression=project.version -DforceStdout 2>/dev/null | sed -e "s/-SNAPSHOT/-pr${BUILD_PARAM_PR_NUMBER}-SNAPSHOT/")
-        - ./mvnw versions:set -DnewVersion=$BOSON_VERSION
-        - echo "BOSON_VERSION=${BOSON_VERSION}"
+        - COMET_VERSION=$(./mvnw -nsu -q $PROFILES help:evaluate -Dexpression=project.version -DforceStdout 2>/dev/null | sed -e "s/-SNAPSHOT/-pr${BUILD_PARAM_PR_NUMBER}-SNAPSHOT/")
+        - ./mvnw versions:set -DnewVersion=$COMET_VERSION
+        - echo "COMET_VERSION=${COMET_VERSION}"
 
         - if [ -z "${BUILD_PARAM_ARTIFACT_X86_64}" -o -z "${BUILD_PARAM_ARTIFACT_AARCH64}" ]; then echo 'ARTIFACT_X86_64 and ARTIFACT_AARCH64 are required!'; exit 1; fi
 
@@ -1823,13 +1823,13 @@ builds:
             - repo: oss-patched-local
     finally:
       pipelineChain:
-        - pipeline: pr-build-artifacts-main-apple-build-3.2_2.12
+        - pipeline: pr-build-artifacts-mastertmp-build-3.2_2.12
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
 
   - group: pr-build
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.3_2.12
     trigger:
       gitPush: false
@@ -1846,13 +1846,13 @@ builds:
       <<: *pr_build_package
     finally:
       pipelineChain:
-        - pipeline: pr-build-artifacts-main-apple-build-3.3_2.12
+        - pipeline: pr-build-artifacts-mastertmp-build-3.3_2.12
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
 
   - group: pr-build
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.3_2.13
     trigger:
       gitPush: false
@@ -1869,13 +1869,13 @@ builds:
       <<: *pr_build_package
     finally:
       pipelineChain:
-        - pipeline: pr-build-artifacts-main-apple-build-3.3_2.13
+        - pipeline: pr-build-artifacts-mastertmp-build-3.3_2.13
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
 
   - group: pr-build
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.4_2.12
     trigger:
       gitPush: false
@@ -1902,7 +1902,7 @@ builds:
             - repo: docker.apple.com/comet-dev/spark${SPARK_VERSION}_${SCALA_VERSION}
 
   - group: pr-build
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.4_2.13
     trigger:
       gitPush: false
@@ -1921,7 +1921,7 @@ builds:
   # Capture the build artifacts from the RIO_CONTEXT_FILE, and convert them to build arguments for
   # the downstream jobs so that they can be restarted when there is a Rio hiccup.
   - group: pr-build-artifacts
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.2_2.12
     trigger:
       gitPush: false
@@ -1931,7 +1931,7 @@ builds:
       <<: *build-artifacts-build
     finally:
       pipelineChain:
-        - pipeline: pr-image-main-apple-publish-3.2_2.12
+        - pipeline: pr-image-mastertmp-publish-3.2_2.12
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
@@ -1939,7 +1939,7 @@ builds:
               value: "${ARTIFACT}"
 
   - group: pr-build-artifacts
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.3_2.12
     trigger:
       gitPush: false
@@ -1949,7 +1949,7 @@ builds:
       <<: *build-artifacts-build
     finally:
       pipelineChain:
-        - pipeline: pr-image-main-apple-publish-3.3_2.12
+        - pipeline: pr-image-mastertmp-publish-3.3_2.12
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
@@ -1957,7 +1957,7 @@ builds:
               value: "${ARTIFACT}"
 
   - group: pr-build-artifacts
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.3_2.13
     trigger:
       gitPush: false
@@ -1967,7 +1967,7 @@ builds:
       <<: *build-artifacts-build
     finally:
       pipelineChain:
-        - pipeline: pr-image-main-apple-publish-3.3_2.13
+        - pipeline: pr-image-mastertmp-publish-3.3_2.13
           buildArguments:
             - name: "PR_NUMBER"
               value: "${BUILD_PARAM_PR_NUMBER}"
@@ -1975,7 +1975,7 @@ builds:
               value: "${ARTIFACT}"
 
   - group: pr-image
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.2_2.12
     trigger:
       gitPush: false
@@ -2002,19 +2002,19 @@ builds:
         - git log -n 1
 
         # Switch to PR version
-        - BOSON_VERSION=$(./mvnw -nsu -q $PROFILES help:evaluate -Dexpression=project.version -DforceStdout 2>/dev/null | sed -e "s/-SNAPSHOT/-pr${BUILD_PARAM_PR_NUMBER}-SNAPSHOT/")
-        - BOSON_VERSION=$(echo ${BUILD_PARAM_ARTIFACT} | sed 's/^.*_[^-]*-//' | sed 's/.jar$//' | head -1)
-        - ./mvnw versions:set -DnewVersion=$BOSON_VERSION
-        - echo "BOSON_VERSION=${BOSON_VERSION}"
+        - COMET_VERSION=$(./mvnw -nsu -q $PROFILES help:evaluate -Dexpression=project.version -DforceStdout 2>/dev/null | sed -e "s/-SNAPSHOT/-pr${BUILD_PARAM_PR_NUMBER}-SNAPSHOT/")
+        - COMET_VERSION=$(echo ${BUILD_PARAM_ARTIFACT} | sed 's/^.*_[^-]*-//' | sed 's/.jar$//' | head -1)
+        - ./mvnw versions:set -DnewVersion=$COMET_VERSION
+        - echo "COMET_VERSION=${COMET_VERSION}"
 
         - if [ -z "${BUILD_PARAM_ARTIFACT}" ]; then echo 'ARTIFACT is required!'; exit 1; fi
 
-        # Use the upstream published Boson
-        - BOSON_VERSION=$(echo ${BUILD_PARAM_ARTIFACT} | sed 's/^.*_[^-]*-//' | sed 's/.jar$//' | head -1)
-        - echo "BOSON_VERSION = ${BOSON_VERSION}"
+        # Use the upstream published Comet
+        - COMET_VERSION=$(echo ${BUILD_PARAM_ARTIFACT} | sed 's/^.*_[^-]*-//' | sed 's/.jar$//' | head -1)
+        - echo "COMET_VERSION = ${COMET_VERSION}"
 
         # Configure Spark
-        - dev/install-comet-spark.sh --use-existing-comet "$BOSON_VERSION"
+        - dev/install-comet-spark.sh --use-existing-comet "$COMET_VERSION"
         - source apache-spark/comet-parameters.sh
         - cd apache-spark
 
@@ -2025,7 +2025,7 @@ builds:
         # Switch back to root for the copy
         - echo 'USER root' >> dist/kubernetes/dockerfiles/spark/Dockerfile
 
-        # Extract Boson native library
+        # Extract Comet native library
         - (mkdir -p dist/native; cd dist/native; jar -xvf ../jars/comet-spark-spark*.jar org/apache/comet/linux; mv -v org/apache/comet/linux .; rm -rf com)
         - echo 'COPY native /opt/spark/native' >> dist/kubernetes/dockerfiles/spark/Dockerfile
         - echo 'RUN if [ "$(uname -m)" == "x86_64" ]; then cp /opt/spark/native/linux/amd64/libcomet.so /lib64/lib/x86_64-linux-gnu/libcomet.so; fi' >> dist/kubernetes/dockerfiles/spark/Dockerfile
@@ -2046,7 +2046,7 @@ builds:
             - repo: docker.apple.com/comet-dev/spark${VERSION}
 
   - group: pr-image
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.3_2.12
     trigger:
       gitPush: false
@@ -2064,7 +2064,7 @@ builds:
       <<: *pr_image_package
 
   - group: pr-image
-    branchName: main-apple
+    branchName: mastertmp
     version: 3.3_2.13
     trigger:
       gitPush: false

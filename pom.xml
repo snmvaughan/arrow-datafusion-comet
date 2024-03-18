@@ -884,6 +884,7 @@ under the License.
             <exclude>dev/Dockerfile*</exclude>
             <exclude>dev/diff/**</exclude>
             <exclude>dev/deploy-file</exclude>
+            <exclude>dev/install-comet-spark.sh</exclude>
             <exclude>dev/rio-context-file-artifacts.sh</exclude>
             <exclude>**/test/resources/**</exclude>
             <exclude>**/benchmarks/*.txt</exclude>
