@@ -76,7 +76,7 @@ builds:
     group: test-comet-java
     branchName: mastertmp
     version: 3.2_2.12
-    disable: true
+    disabled: true
     machine:
       <<: *rio3-machine
       env:
@@ -93,7 +93,7 @@ builds:
 
   - <<: *comet-java
     version: 3.3_2.12
-    disable: true
+    disabled: true
     machine:
       <<: *rio3-machine
       env:
@@ -102,7 +102,7 @@ builds:
 
   - <<: *comet-java
     version: 3.3_2.13
-    disable: true
+    disabled: true
     machine:
       <<: *rio3-machine
       env:
@@ -111,7 +111,7 @@ builds:
 
   - <<: *comet-java
     version: 3.4_2.12
-    disable: false
+    disabled: false
     machine:
       <<: *rio3-machine
       env:
@@ -123,7 +123,7 @@ builds:
 
   - <<: *comet-java
     version: 3.4_2.13
-    disable: false
+    disabled: false
     machine:
       <<: *rio3-machine
       env:
@@ -137,7 +137,7 @@ builds:
     group: test-comet-tpcds-queries
     branchName: mastertmp
     version: 3.4_2.12
-    disable: false
+    disabled: false
     machine:
       <<: *rio3-machine
       targetPlatforms:
@@ -160,7 +160,7 @@ builds:
     group: test-comet-tpch-queries
     branchName: mastertmp
     version: 3.4_2.12
-    disable: false
+    disabled: false
     machine:
       <<: *rio3-machine
       targetPlatforms:
@@ -179,7 +179,7 @@ builds:
     group: test-spark-sql-catalyst
     branchName: mastertmp
     version: 3.2_2.12
-    disable: true
+    disabled: true
     timeout: 180
     machine: &rio2-machine
       baseImage: docker.apple.com/pie/boson-builder:latest
@@ -227,7 +227,7 @@ builds:
   - &comet-spark
     group: test-spark-sql-catalyst
     version: 3.3_2.12
-    disable: true
+    disabled: true
     branchName: mastertmp
     timeout: 180
     machine:
@@ -257,7 +257,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-catalyst
     version: 3.3_2.13
-    disable: true
+    disabled: true
     machine:
       <<: *rio3-machine
       env:
@@ -269,7 +269,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-catalyst
     version: 3.4_2.12
-    disable: false
+    disabled: false
     machine:
       <<: *rio3-machine
       env:
@@ -289,7 +289,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-catalyst
     version: 3.4_2.13
-    disable: false
+    disabled: false
     machine:
       <<: *rio3-machine
       env:
@@ -317,7 +317,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-core-1
     version: 3.3_2.12
-    disable: true
+    disabled: true
     machine:
       <<: *rio3-machine
       # NOTE: Requires ubi8 due to leveldbjni and graviton
@@ -331,7 +331,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-core-1
     version: 3.3_2.13
-    disable: true
+    disabled: true
     machine:
       <<: *rio3-machine
       # NOTE: Requires ubi8 due to leveldbjni and graviton
@@ -345,7 +345,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-core-1
     version: 3.4_2.12
-    disable: false
+    disabled: false
     machine:
       <<: *rio3-machine
       # NOTE: Requires ubi8 due to leveldbjni and graviton
@@ -365,7 +365,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-core-1
     version: 3.4_2.13
-    disable: false
+    disabled: false
     machine:
       <<: *rio3-machine
       # NOTE: Requires ubi8 due to leveldbjni and graviton
@@ -395,7 +395,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-core-2
     version: 3.3_2.12
-    disable: true
+    disabled: true
     machine:
       <<: *rio3-machine
       env:
@@ -407,7 +407,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-core-2
     version: 3.3_2.13
-    disable: true
+    disabled: true
     machine:
       <<: *rio3-machine
       env:
@@ -419,7 +419,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-core-2
     version: 3.4_2.12
-    disable: false
+    disabled: false
     machine:
       <<: *rio3-machine
       env:
@@ -437,7 +437,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-core-2
     version: 3.4_2.13
-    disable: false
+    disabled: false
     machine:
       <<: *rio3-machine
       env:
@@ -455,7 +455,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-core-3
     version: 3.4_2.12
-    disable: false
+    disabled: false
     machine:
       <<: *rio3-machine
       env:
@@ -473,7 +473,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-core-3
     version: 3.4_2.13
-    disable: false
+    disabled: false
     machine:
       <<: *rio3-machine
       env:
@@ -501,7 +501,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-hive-1
     version: 3.3_2.12
-    disable: true
+    disabled: true
     machine:
       <<: *rio3-machine
       env:
@@ -513,7 +513,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-hive-1
     version: 3.3_2.13
-    disable: true
+    disabled: true
     machine:
       <<: *rio3-machine
       env:
@@ -525,7 +525,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-hive-1
     version: 3.4_2.12
-    disable: false
+    disabled: false
     machine:
       <<: *rio3-machine
       env:
@@ -543,7 +543,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-hive-1
     version: 3.4_2.13
-    disable: false
+    disabled: false
     machine:
       <<: *rio3-machine
       env:
@@ -571,7 +571,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-hive-2
     version: 3.3_2.12
-    disable: true
+    disabled: true
     machine:
       <<: *rio3-machine
       env:
@@ -583,7 +583,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-hive-2
     version: 3.3_2.13
-    disable: true
+    disabled: true
     machine:
       <<: *rio3-machine
       env:
@@ -595,7 +595,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-hive-2
     version: 3.4_2.12
-    disable: false
+    disabled: false
     machine:
       <<: *rio3-machine
       env:
@@ -613,7 +613,7 @@ builds:
   - <<: *comet-spark
     group: test-spark-sql-hive-2
     version: 3.4_2.13
-    disable: false
+    disabled: false
     machine:
       <<: *rio3-machine
       env:
@@ -632,7 +632,7 @@ builds:
     group: test-iceberg
     branchName: mastertmp
     version: 3.2_2.12
-    disable: true
+    disabled: true
     machine:
       <<: *rio3-machine
       env:
@@ -662,7 +662,7 @@ builds:
 
   - <<: *comet-iceberg
     version: 3.3_2.12
-    disable: true
+    disabled: true
     machine:
       <<: *rio3-machine
       env:
@@ -675,7 +675,7 @@ builds:
 
   - <<: *comet-iceberg
     version: 3.3_2.13
-    disable: true
+    disabled: true
     machine:
       <<: *rio3-machine
       env:
@@ -688,7 +688,7 @@ builds:
 
   - <<: *comet-iceberg
     version: 3.4_2.12
-    disable: false
+    disabled: false
     machine:
       <<: *rio3-machine
       env:
@@ -706,7 +706,7 @@ builds:
 
   - <<: *comet-iceberg
     version: 3.4_2.13
-    disable: false
+    disabled: false
     machine:
       <<: *rio3-machine
       env:
@@ -882,7 +882,7 @@ builds:
   - group: build
     branchName: mastertmp
     version: 3.2_2.12
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -930,7 +930,7 @@ builds:
   - group: build
     branchName: mastertmp
     version: 3.3_2.12
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -953,7 +953,7 @@ builds:
   - group: build
     branchName: mastertmp
     version: 3.3_2.13
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -976,7 +976,7 @@ builds:
   - group: build
     branchName: mastertmp
     version: 3.4_2.12
-    disable: false
+    disabled: false
     trigger:
       gitPush: false
     machine:
@@ -999,7 +999,7 @@ builds:
   - group: build
     branchName: mastertmp
     version: 3.4_2.13
-    disable: false
+    disabled: false
     trigger:
       gitPush: false
     machine:
@@ -1024,7 +1024,7 @@ builds:
   - group: build-artifacts
     branchName: mastertmp
     version: 3.2_2.12
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine: &build-artifacts-machine
@@ -1044,7 +1044,7 @@ builds:
   - group: build-artifacts
     branchName: mastertmp
     version: 3.3_2.12
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -1061,7 +1061,7 @@ builds:
   - group: build-artifacts
     branchName: mastertmp
     version: 3.3_2.13
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -1078,7 +1078,7 @@ builds:
   - group: build-artifacts
     branchName: mastertmp
     version: 3.4_2.12
-    disable: false
+    disabled: false
     trigger:
       gitPush: false
     machine:
@@ -1095,7 +1095,7 @@ builds:
   - group: build-artifacts
     branchName: mastertmp
     version: 3.4_2.13
-    disable: false
+    disabled: false
     trigger:
       gitPush: false
     machine:
@@ -1112,7 +1112,7 @@ builds:
   - group: image
     branchName: mastertmp
     version: 3.2_2.12
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -1155,7 +1155,7 @@ builds:
   - group: image
     branchName: mastertmp
     version: 3.3_2.12
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -1174,7 +1174,7 @@ builds:
   - group: image
     branchName: mastertmp
     version: 3.3_2.13
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -1193,7 +1193,7 @@ builds:
   - group: image
     branchName: mastertmp
     version: 3.4_2.12
-    disable: false
+    disabled: false
     trigger:
       gitPush: false
     machine:
@@ -1212,7 +1212,7 @@ builds:
   - group: image
     branchName: mastertmp
     version: 3.4_2.13
-    disable: false
+    disabled: false
     trigger:
       gitPush: false
     machine:
@@ -1231,7 +1231,7 @@ builds:
   - group: nightly
     branchName: mastertmp
     version: 3.2_2.12
-    disable: true
+    disabled: true
     trigger:
       timer: '@midnight'
       gitPush: false
@@ -1256,7 +1256,7 @@ builds:
   - group: nightly
     branchName: mastertmp
     version: 3.3_2.12
-    disable: true
+    disabled: true
     trigger:
       timer: '@midnight'
       gitPush: false
@@ -1273,7 +1273,7 @@ builds:
   - group: nightly
     branchName: mastertmp
     version: 3.3_2.13
-    disable: true
+    disabled: true
     trigger:
       timer: '@midnight'
       gitPush: false
@@ -1290,7 +1290,7 @@ builds:
   - group: nightly
     branchName: mastertmp
     version: 3.4_2.12
-    disable: false
+    disabled: false
     trigger:
       timer: '@midnight'
       gitPush: false
@@ -1307,7 +1307,7 @@ builds:
   - group: nightly
     branchName: mastertmp
     version: 3.4_2.13
-    disable: false
+    disabled: false
     trigger:
       timer: '@midnight'
       gitPush: false
@@ -1401,7 +1401,7 @@ builds:
   - group: build
     branchName: release
     version: 3.2_2.12
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -1446,7 +1446,7 @@ builds:
   - group: build
     branchName: release
     version: 3.3_2.12
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -1467,7 +1467,7 @@ builds:
   - group: build
     branchName: release
     version: 3.3_2.13
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -1488,7 +1488,7 @@ builds:
   - group: build
     branchName: release
     version: 3.4_2.12
-    disable: false
+    disabled: false
     trigger:
       gitPush: false
     machine:
@@ -1509,7 +1509,7 @@ builds:
   - group: build
     branchName: release
     version: 3.4_2.13
-    disable: false
+    disabled: false
     trigger:
       gitPush: false
     machine:
@@ -1532,7 +1532,7 @@ builds:
   - group: build-artifacts
     branchName: release
     version: 3.2_2.12
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -1549,7 +1549,7 @@ builds:
   - group: build-artifacts
     branchName: release
     version: 3.3_2.12
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -1566,7 +1566,7 @@ builds:
   - group: build-artifacts
     branchName: release
     version: 3.3_2.13
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -1583,7 +1583,7 @@ builds:
   - group: build-artifacts
     branchName: release
     version: 3.4_2.12
-    disable: false
+    disabled: false
     trigger:
       gitPush: false
     machine:
@@ -1600,7 +1600,7 @@ builds:
   - group: build-artifacts
     branchName: release
     version: 3.4_2.13
-    disable: false
+    disabled: false
     trigger:
       gitPush: false
     machine:
@@ -1617,7 +1617,7 @@ builds:
   - group: image
     branchName: release
     version: 3.2_2.12
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -1661,7 +1661,7 @@ builds:
   - group: image
     branchName: release
     version: 3.3_2.12
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -1680,7 +1680,7 @@ builds:
   - group: image
     branchName: release
     version: 3.3_2.13
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -1699,7 +1699,7 @@ builds:
   - group: image
     branchName: release
     version: 3.4_2.12
-    disable: false
+    disabled: false
     trigger:
       gitPush: false
     machine:
@@ -1718,7 +1718,7 @@ builds:
   - group: image
     branchName: release
     version: 3.4_2.13
-    disable: false
+    disabled: false
     trigger:
       gitPush: false
     machine:
@@ -1844,7 +1844,7 @@ builds:
   - group: pr-build
     branchName: mastertmp
     version: 3.2_2.12
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -1902,7 +1902,7 @@ builds:
   - group: pr-build
     branchName: mastertmp
     version: 3.3_2.12
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -1926,7 +1926,7 @@ builds:
   - group: pr-build
     branchName: mastertmp
     version: 3.3_2.13
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -1950,7 +1950,7 @@ builds:
   - group: pr-build
     branchName: mastertmp
     version: 3.4_2.12
-    disable: false
+    disabled: false
     trigger:
       gitPush: false
     machine:
@@ -1978,7 +1978,7 @@ builds:
   - group: pr-build
     branchName: mastertmp
     version: 3.4_2.13
-    disable: false
+    disabled: false
     trigger:
       gitPush: false
     machine:
@@ -1998,7 +1998,7 @@ builds:
   - group: pr-build-artifacts
     branchName: mastertmp
     version: 3.2_2.12
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -2017,7 +2017,7 @@ builds:
   - group: pr-build-artifacts
     branchName: mastertmp
     version: 3.3_2.12
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -2036,7 +2036,7 @@ builds:
   - group: pr-build-artifacts
     branchName: mastertmp
     version: 3.3_2.13
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -2055,7 +2055,7 @@ builds:
   - group: pr-image
     branchName: mastertmp
     version: 3.2_2.12
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -2127,7 +2127,7 @@ builds:
   - group: pr-image
     branchName: mastertmp
     version: 3.3_2.12
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
@@ -2146,7 +2146,7 @@ builds:
   - group: pr-image
     branchName: mastertmp
     version: 3.3_2.13
-    disable: true
+    disabled: true
     trigger:
       gitPush: false
     machine:
