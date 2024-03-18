@@ -74,9 +74,14 @@ git clone git@github.pie.apple.com:IPR/apache-spark.git --depth 1 --branch $SPAR
 cd apache-spark
 
 # Apply custom diff files, if they exist
-if [ -f "$BASEDIR/diff/$SPARK_BRANCH.diff" ]; then
-  git apply "$BASEDIR/diff/$SPARK_BRANCH.diff"
+#if [ -f "$BASEDIR/diff/$SPARK_BRANCH.diff" ]; then
+#  git apply "$BASEDIR/diff/$SPARK_BRANCH.diff"
+#fi
+if [ -f "$BASEDIR/diffs/remove-loops-3.4.diff" ]; then
+  git apply "$BASEDIR/diffs/remove-loops-3.4.diff"
 fi
+
+$BASEDIR/boson-to-comet.sh
 
 # Update the Boson version
 $COMET_WORKSPACE/mvnw -nsu -q versions:set-property -Dproperty=comet.version  -DnewVersion=$COMET_VERSION -DgenerateBackupPoms=false
@@ -85,7 +90,7 @@ $COMET_WORKSPACE/mvnw -nsu -q versions:set-property -Dproperty=comet.version  -D
 dev/change-scala-version.sh $SCALA_BINARY_VERSION
 
 # FIXME Temporary work around for excluded javax.servlet
-sed -i.bak -E '0,/javax.servlet/{s/^( *)(ExclusionRule\("javax.servlet")/\1\/\/\2/}' project/SparkBuild.scala 
+#sed -i.bak -E '0,/javax.servlet/{s/^( *)(ExclusionRule\("javax.servlet")/\1\/\/\2/}' project/SparkBuild.scala 
 
 # Use an internal Docker Hub mirror to enable Rio 3 builds
 find resource-managers/kubernetes -name Dockerfile | xargs -n 1 sed -i.bak 's|^FROM |FROM docker-upstream.apple.com/|'

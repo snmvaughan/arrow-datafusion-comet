@@ -882,7 +882,9 @@ under the License.
             <exclude>rust-toolchain</exclude>
             <exclude>Makefile</exclude>
             <exclude>dev/Dockerfile*</exclude>
+            <exclude>dev/boson-to-comet.sh</exclude>
             <exclude>dev/diff/**</exclude>
+            <exclude>dev/diffs/**</exclude>
             <exclude>dev/deploy-file</exclude>
             <exclude>dev/install-comet-spark.sh</exclude>
             <exclude>dev/rio-context-file-artifacts.sh</exclude>
