@@ -50,6 +50,9 @@ if [ -z "$COMET_VERSION" ]; then
 fi
 SPARK_VERSION=$(./mvnw -nsu -q $PROFILES help:evaluate -Dexpression=spark.version -DforceStdout)
 SPARK_PATCH_VERSION=$(echo $SPARK_VERSION | sed -E 's/([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
+if [ "$SPARK_PATCH_VERSION" == "3.4.2" ]; then
+  SPARK_PATCH_VERSION="3.4.0"
+fi
 SPARK_BRANCH=${1:-"branch-${SPARK_PATCH_VERSION}-apple"}
 SCALA_BINARY_VERSION=$($COMET_WORKSPACE/mvnw -nsu -q $PROFILES help:evaluate -Dexpression=scala.binary.version -DforceStdout 2>/dev/null)
 SCALA_VERSION=$($COMET_WORKSPACE/mvnw -nsu -q $PROFILES help:evaluate -Dexpression=scala.version -DforceStdout 2>/dev/null)
@@ -101,5 +104,6 @@ export COMET_WORKSPACE=$COMET_WORKSPACE
 export COMET_VERSION=$COMET_VERSION
 export SCALA_VERSION=$SCALA_VERSION
 export SCALA_BINARY_VERSION=$SCALA_BINARY_VERSION
+export SPARK_BRANCH=$SPARK_BRANCH
 EOD
 chmod a+x comet-parameters.sh
