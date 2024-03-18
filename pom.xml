@@ -870,6 +870,7 @@ under the License.
             <exclude>**/build/**</exclude>
             <exclude>**/target/**</exclude>
             <exclude>**/apache-spark/**</exclude>
+            <exclude>.cicd/**</exclude>
             <exclude>.git/**</exclude>
             <exclude>.github/**</exclude>
             <exclude>.gitignore</exclude>
