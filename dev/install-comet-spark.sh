@@ -79,8 +79,9 @@ cd apache-spark
 #if [ -f "$BASEDIR/diff/$SPARK_BRANCH.diff" ]; then
 #  git apply "$BASEDIR/diff/$SPARK_BRANCH.diff"
 #fi
-if [ -f "$BASEDIR/diffs/remove-ExtendedDataSourceV2Strategy.diff" ]; then
-  git apply "$BASEDIR/diffs/remove-ExtendedDataSourceV2Strategy.diff"
+if [ -f "$BASEDIR/diffs/remove-ExtendedDataSourceV2Strategy-${SPARK_MINOR_VERSION}.diff" ]; then
+  git apply "$BASEDIR/diffs/remove-ExtendedDataSourceV2Strategy-${SPARK_MINOR_VERSION}.diff"
+fi
 fi
 if [ -f "$BASEDIR/diffs/remove-loops-3.4.diff" ]; then
   git apply "$BASEDIR/diffs/remove-loops-3.4.diff"
