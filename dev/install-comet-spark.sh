@@ -82,9 +82,9 @@ cd apache-spark
 if [ -f "$BASEDIR/diffs/remove-ExtendedDataSourceV2Strategy-${SPARK_MINOR_VERSION}.diff" ]; then
   git apply "$BASEDIR/diffs/remove-ExtendedDataSourceV2Strategy-${SPARK_MINOR_VERSION}.diff"
 fi
+if [ -f "$BASEDIR/diffs/remove-loops-${SPARK_MINOR_VERSION}.diff" ]; then
+  git apply "$BASEDIR/diffs/remove-loops-${SPARK_MINOR_VERSION}.diff"
 fi
-if [ -f "$BASEDIR/diffs/remove-loops-3.4.diff" ]; then
-  git apply "$BASEDIR/diffs/remove-loops-3.4.diff"
 fi
 
 $BASEDIR/boson-to-comet.sh
