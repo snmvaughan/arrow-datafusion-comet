@@ -11,7 +11,9 @@ for file in $BOSON_FILES; do
   sed -i.bak -E 's/com.apple.boson/org.apache.comet/g' $file
   sed -i.bak -E 's/org.apache.spark.sql.boson/org.apache.spark.sql.comet/g' $file
   sed -i.bak -E 's/spark.boson/spark.comet/g' $file
+  sed -i.bak -E 's/boson/comet/g' $file
   sed -i.bak -E 's/Boson/Comet/g' $file
+  sed -i.bak -E 's/BOSON/COMET/g' $file
 done
 
 find $SPARK_BASE -name "*.bak" | xargs rm -f {} \;
