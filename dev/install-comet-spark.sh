@@ -49,6 +49,7 @@ if [ -z "$COMET_VERSION" ]; then
   COMET_VERSION=$($COMET_WORKSPACE/mvnw -nsu -q $PROFILES help:evaluate -Dexpression=project.version -DforceStdout 2>/dev/null)
 fi
 SPARK_VERSION=$(./mvnw -nsu -q $PROFILES help:evaluate -Dexpression=spark.version -DforceStdout)
+SPARK_MINOR_VERSION=$(echo $SPARK_VERSION | sed -E 's/([0-9]+\.[0-9]+).*/\1/')
 SPARK_PATCH_VERSION=$(echo $SPARK_VERSION | sed -E 's/([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
 # Workaround for Apple not ignoring the patch version
 SPARK_PATCH_VERSION=$(echo $SPARK_PATCH_VERSION | sed 's/\.[0-9]$/.0/')
