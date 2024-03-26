@@ -1279,11 +1279,11 @@ object QueryPlanSerde extends Logging with ShimQueryPlanSerde {
           scalarExprToProto("tan", childExpr)
 
         case Ascii(child) =>
-          val childExpr = exprToProtoInternal(Cast(child, StringType), inputs)
+          val childExpr = exprToProtoInternal(child, inputs)
           scalarExprToProto("ascii", childExpr)
 
         case BitLength(child) =>
-          val childExpr = exprToProtoInternal(Cast(child, StringType), inputs)
+          val childExpr = exprToProtoInternal(child, inputs)
           scalarExprToProto("bit_length", childExpr)
 
         case If(predicate, trueValue, falseValue) =>
@@ -1330,7 +1330,7 @@ object QueryPlanSerde extends Logging with ShimQueryPlanSerde {
           }
 
         case ConcatWs(children) =>
-          val exprs = children.map(e => exprToProtoInternal(Cast(e, StringType), inputs))
+          val exprs = children.map(e => exprToProtoInternal(e, inputs))
           scalarExprToProto("concat_ws", exprs: _*)
 
         case Chr(child) =>
@@ -1338,49 +1338,49 @@ object QueryPlanSerde extends Logging with ShimQueryPlanSerde {
           scalarExprToProto("chr", childExpr)
 
         case InitCap(child) =>
-          val childExpr = exprToProtoInternal(Cast(child, StringType), inputs)
+          val childExpr = exprToProtoInternal(child, inputs)
           scalarExprToProto("initcap", childExpr)
 
         case Length(child) =>
-          val childExpr = exprToProtoInternal(Cast(child, StringType), inputs)
+          val childExpr = exprToProtoInternal(child, inputs)
           scalarExprToProto("length", childExpr)
 
         case Lower(child) =>
-          val childExpr = exprToProtoInternal(Cast(child, StringType), inputs)
+          val childExpr = exprToProtoInternal(child, inputs)
           scalarExprToProto("lower", childExpr)
 
         case Md5(child) =>
-          val childExpr = exprToProtoInternal(Cast(child, StringType), inputs)
+          val childExpr = exprToProtoInternal(child, inputs)
           scalarExprToProto("md5", childExpr)
 
         case OctetLength(child) =>
-          val childExpr = exprToProtoInternal(Cast(child, StringType), inputs)
+          val childExpr = exprToProtoInternal(child, inputs)
           scalarExprToProto("octet_length", childExpr)
 
         case Reverse(child) =>
-          val childExpr = exprToProtoInternal(Cast(child, StringType), inputs)
+          val childExpr = exprToProtoInternal(child, inputs)
           scalarExprToProto("reverse", childExpr)
 
         case StringInstr(str, substr) =>
-          val leftExpr = exprToProtoInternal(Cast(str, StringType), inputs)
-          val rightExpr = exprToProtoInternal(Cast(substr, StringType), inputs)
+          val leftExpr = exprToProtoInternal(str, inputs)
+          val rightExpr = exprToProtoInternal(substr, inputs)
           scalarExprToProto("strpos", leftExpr, rightExpr)
 
         case StringRepeat(str, times) =>
-          val leftExpr = exprToProtoInternal(Cast(str, StringType), inputs)
+          val leftExpr = exprToProtoInternal(str, inputs)
           val rightExpr = exprToProtoInternal(Cast(times, LongType), inputs)
           scalarExprToProto("repeat", leftExpr, rightExpr)
 
         case StringReplace(src, search, replace) =>
-          val srcExpr = exprToProtoInternal(Cast(src, StringType), inputs)
-          val searchExpr = exprToProtoInternal(Cast(search, StringType), inputs)
-          val replaceExpr = exprToProtoInternal(Cast(replace, StringType), inputs)
+          val srcExpr = exprToProtoInternal(src, inputs)
+          val searchExpr = exprToProtoInternal(search, inputs)
+          val replaceExpr = exprToProtoInternal(replace, inputs)
           scalarExprToProto("replace", srcExpr, searchExpr, replaceExpr)
 
         case StringTranslate(src, matching, replace) =>
-          val srcExpr = exprToProtoInternal(Cast(src, StringType), inputs)
-          val matchingExpr = exprToProtoInternal(Cast(matching, StringType), inputs)
-          val replaceExpr = exprToProtoInternal(Cast(replace, StringType), inputs)
+          val srcExpr = exprToProtoInternal(src, inputs)
+          val matchingExpr = exprToProtoInternal(matching, inputs)
+          val replaceExpr = exprToProtoInternal(replace, inputs)
           scalarExprToProto("translate", srcExpr, matchingExpr, replaceExpr)
 
         case StringTrim(srcStr, trimStr) =>
@@ -1396,7 +1396,7 @@ object QueryPlanSerde extends Logging with ShimQueryPlanSerde {
           trim(srcStr, trimStr, inputs, "btrim")
 
         case Upper(child) =>
-          val childExpr = exprToProtoInternal(Cast(child, StringType), inputs)
+          val childExpr = exprToProtoInternal(child, inputs)
           scalarExprToProto("upper", childExpr)
 
         case BitwiseAnd(left, right) =>
@@ -1657,7 +1657,7 @@ object QueryPlanSerde extends Logging with ShimQueryPlanSerde {
         trimStr: Option[Expression],
         inputs: Seq[Attribute],
         trimType: String): Option[Expr] = {
-      val srcExpr = exprToProtoInternal(Cast(srcStr, StringType), inputs)
+      val srcExpr = exprToProtoInternal(srcStr, inputs)
       if (trimStr.isDefined) {
         val trimExpr = exprToProtoInternal(Cast(trimStr.get, StringType), inputs)
         scalarExprToProto(trimType, srcExpr, trimExpr)
